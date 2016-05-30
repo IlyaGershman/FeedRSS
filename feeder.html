@@ -1,0 +1,54 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>RSS reader</title>
+    <link rel="stylesheet" type="text/css" href="plugins/bootstrap.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="plugins/jquery.cookie.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js"></script>
+</head>
+
+
+<body ng-app="RSSFeedApp">
+
+<div class="container-fluid">
+    <div data-ng-controller="FeedCtrl">
+        <div class="row-fluid">
+            <div class="col-md-4" style="height: 800px; overflow: scroll;">
+                <form name="feedForm">
+                    <div class="input-prepend span12">
+                        <input id="feedURL" type="url" required="" placeholder="Enter Feed URL" data-ng-model="feedSrc" />
+                        <button class="btn btn-info" type="button" ng-click="loadFeed(getURL('feedURL'));" ng-disabled="feedForm.$invalid">Load Feed</button>
+                    </div>
+                </form>
+                <div id="rssLinks">
+                    <div ng-repeat="item in items track by $index">
+                        <div style="width: 250px; float: left;overflow: scroll">
+                            <button style="height: 50px" class="btn-primary {{item.active}}" ><a style="color:white" href="#{{item.url}}" ng-click="loadFeed(item.url)">{{item.url}}</a></button>
+                        </div>
+                        <div >
+                            <button style="height: 50px; overflow: scroll" class="btn-danger" ng-click="deleteFeed(item.url)">x</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8" style="height: 800px; overflow: scroll;">
+
+                <div class="row-fluid">
+                    <ul class="unstyled"><h3>{{feedSrc}}</h3>
+                        <li ng-repeat="feed in feeds">
+                            <h5><a href="{{feed.link}}">{{feed.title}}</a></h5>
+                            <p class="text-left">{{feed.contentSnippet}}</p>
+                            <span class="small">{{feed.publishedDate}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="feeder.js"></script>
+</html>
